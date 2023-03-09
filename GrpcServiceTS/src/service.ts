@@ -6,40 +6,40 @@ import {
 } from '@grpc/grpc-js';
 
 // Подключаем сгенерированный сервис.
-import { TestServiceService } from './proto/services/test/v1/test_grpc_pb';
+import { OutputServiceService } from './proto/output_grpc_pb';
 
 // Подключаем сгенерированные grpc классы.
 import {
-    SayHelloRequest,
-    SayHelloResponse,
-} from './proto/services/test/v1/test_pb.d';
+    OutputRequest,
+    OutputResponse,
+} from './proto/output_pb';
 
 export class Service {
     run() {
         // Создаем обработчик запроса.
-        const sayHello = (
-            call: ServerUnaryCall<SayHelloRequest, SayHelloResponse>,
-            callback: sendUnaryData<SayHelloResponse>
+        const output = (
+            call: ServerUnaryCall<OutputRequest, OutputResponse>,
+            callback: sendUnaryData<OutputResponse>
         ) => {
             // Класс ответа.
-            const responce = new SayHelloResponse();
+            const responce = new OutputResponse();
 
             // Достаем данные из запроса.
-            const name = call.request.getName();
+            const name = call.request.getData();
 
             // Кладем данные в ответ.
-            responce.setMessage(`Responce for ${name}`);
+            responce.setData(`Responce for ${name}`);
 
             // Отправялем ответ.
             callback(null, responce);
             
-            console.info(`[Service] Received: ${name}. Sent responce: ${responce.getMessage()}`);
+            console.info(`[Service] Received: ${name}. Sent responce: ${responce.getData()}`);
         };
 
         const server = new Server();
 
         // Регаем сервис и обработчик запроса.
-        server.addService(TestServiceService, {sayHello});
+        server.addService(OutputServiceService, {output});
 
         // Запускаем сервер.
         server.bindAsync('0.0.0.0:4000', ServerCredentials.createInsecure(), () => {

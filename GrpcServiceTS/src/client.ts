@@ -1,21 +1,21 @@
 import { credentials } from "@grpc/grpc-js";
-import { TestServiceClient } from "./proto/services/test/v1/test_grpc_pb";
-import { SayHelloRequest } from "./proto/services/test/v1/test_pb";
+import { InputServiceClient } from "./proto/input_grpc_pb";
+import { InputRequest } from "./proto/input_pb";
 
 export class Client {
     run() {
-        const client = new TestServiceClient('localhost:4000', credentials.createInsecure());
+        const client = new InputServiceClient('localhost:4000', credentials.createInsecure());
 
-        const request = new SayHelloRequest();
-        request.setName("Abcd");
+        const request = new InputRequest();
+        request.setData("Abcd");
 
-        client.sayHello(request, (error, response) => {
+        client.input(request, (error, response) => {
             if(error) {
                 console.error(error);
                 return;
             }
 
-            console.info(`[Client] Received responce: ${response.getMessage()}`);
+            console.info(`[Client] Received responce: ${response.getData()}`);
         });
     }
 }

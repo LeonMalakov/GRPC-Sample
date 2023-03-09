@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcServiceCS";
+
+package input;
+
+service InputService {
+  rpc Input (InputRequest) returns (InputResponse);
+}
+
+message InputRequest {
+  string data = 1;
+}
+
+message InputResponse {
+  string data = 1;
+}

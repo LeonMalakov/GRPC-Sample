@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcServiceCS";
+
+package output;
+
+service OutputService {
+  rpc Output (OutputRequest) returns (OutputResponse);
+}
+
+message OutputRequest {
+  string data = 1;
+}
+
+message OutputResponse {
+  string data = 1;
+}
