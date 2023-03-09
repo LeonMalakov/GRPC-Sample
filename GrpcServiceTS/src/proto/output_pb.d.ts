@@ -6,41 +6,41 @@
 
 import * as jspb from "google-protobuf";
 
-export class OutputRequest extends jspb.Message { 
+export class SomeFunctionRequest extends jspb.Message { 
     getData(): string;
-    setData(value: string): OutputRequest;
+    setData(value: string): SomeFunctionRequest;
 
     serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): OutputRequest.AsObject;
-    static toObject(includeInstance: boolean, msg: OutputRequest): OutputRequest.AsObject;
+    toObject(includeInstance?: boolean): SomeFunctionRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: SomeFunctionRequest): SomeFunctionRequest.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
     static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: OutputRequest, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): OutputRequest;
-    static deserializeBinaryFromReader(message: OutputRequest, reader: jspb.BinaryReader): OutputRequest;
+    static serializeBinaryToWriter(message: SomeFunctionRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): SomeFunctionRequest;
+    static deserializeBinaryFromReader(message: SomeFunctionRequest, reader: jspb.BinaryReader): SomeFunctionRequest;
 }
 
-export namespace OutputRequest {
+export namespace SomeFunctionRequest {
     export type AsObject = {
         data: string,
     }
 }
 
-export class OutputResponse extends jspb.Message { 
+export class SomeFunctionResponse extends jspb.Message { 
     getData(): string;
-    setData(value: string): OutputResponse;
+    setData(value: string): SomeFunctionResponse;
 
     serializeBinary(): Uint8Array;
-    toObject(includeInstance?: boolean): OutputResponse.AsObject;
-    static toObject(includeInstance: boolean, msg: OutputResponse): OutputResponse.AsObject;
+    toObject(includeInstance?: boolean): SomeFunctionResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: SomeFunctionResponse): SomeFunctionResponse.AsObject;
     static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
     static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-    static serializeBinaryToWriter(message: OutputResponse, writer: jspb.BinaryWriter): void;
-    static deserializeBinary(bytes: Uint8Array): OutputResponse;
-    static deserializeBinaryFromReader(message: OutputResponse, reader: jspb.BinaryReader): OutputResponse;
+    static serializeBinaryToWriter(message: SomeFunctionResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): SomeFunctionResponse;
+    static deserializeBinaryFromReader(message: SomeFunctionResponse, reader: jspb.BinaryReader): SomeFunctionResponse;
 }
 
-export namespace OutputResponse {
+export namespace SomeFunctionResponse {
     export type AsObject = {
         data: string,
     }

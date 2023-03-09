@@ -7,35 +7,35 @@
 import * as grpc from "@grpc/grpc-js";
 import * as output_pb from "./output_pb";
 
-interface IOutputServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
-    output: IOutputServiceService_IOutput;
+interface IOutputService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
+    someFunction: IOutputService_ISomeFunction;
 }
 
-interface IOutputServiceService_IOutput extends grpc.MethodDefinition<output_pb.OutputRequest, output_pb.OutputResponse> {
-    path: "/output.OutputService/Output";
+interface IOutputService_ISomeFunction extends grpc.MethodDefinition<output_pb.SomeFunctionRequest, output_pb.SomeFunctionResponse> {
+    path: "/output.Output/SomeFunction";
     requestStream: false;
     responseStream: false;
-    requestSerialize: grpc.serialize<output_pb.OutputRequest>;
-    requestDeserialize: grpc.deserialize<output_pb.OutputRequest>;
-    responseSerialize: grpc.serialize<output_pb.OutputResponse>;
-    responseDeserialize: grpc.deserialize<output_pb.OutputResponse>;
+    requestSerialize: grpc.serialize<output_pb.SomeFunctionRequest>;
+    requestDeserialize: grpc.deserialize<output_pb.SomeFunctionRequest>;
+    responseSerialize: grpc.serialize<output_pb.SomeFunctionResponse>;
+    responseDeserialize: grpc.deserialize<output_pb.SomeFunctionResponse>;
 }
 
-export const OutputServiceService: IOutputServiceService;
+export const OutputService: IOutputService;
 
-export interface IOutputServiceServer extends grpc.UntypedServiceImplementation {
-    output: grpc.handleUnaryCall<output_pb.OutputRequest, output_pb.OutputResponse>;
+export interface IOutputServer extends grpc.UntypedServiceImplementation {
+    someFunction: grpc.handleUnaryCall<output_pb.SomeFunctionRequest, output_pb.SomeFunctionResponse>;
 }
 
-export interface IOutputServiceClient {
-    output(request: output_pb.OutputRequest, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
-    output(request: output_pb.OutputRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
-    output(request: output_pb.OutputRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
+export interface IOutputClient {
+    someFunction(request: output_pb.SomeFunctionRequest, callback: (error: grpc.ServiceError | null, response: output_pb.SomeFunctionResponse) => void): grpc.ClientUnaryCall;
+    someFunction(request: output_pb.SomeFunctionRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: output_pb.SomeFunctionResponse) => void): grpc.ClientUnaryCall;
+    someFunction(request: output_pb.SomeFunctionRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: output_pb.SomeFunctionResponse) => void): grpc.ClientUnaryCall;
 }
 
-export class OutputServiceClient extends grpc.Client implements IOutputServiceClient {
+export class OutputClient extends grpc.Client implements IOutputClient {
     constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
-    public output(request: output_pb.OutputRequest, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
-    public output(request: output_pb.OutputRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
-    public output(request: output_pb.OutputRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
+    public someFunction(request: output_pb.SomeFunctionRequest, callback: (error: grpc.ServiceError | null, response: output_pb.SomeFunctionResponse) => void): grpc.ClientUnaryCall;
+    public someFunction(request: output_pb.SomeFunctionRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: output_pb.SomeFunctionResponse) => void): grpc.ClientUnaryCall;
+    public someFunction(request: output_pb.SomeFunctionRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: output_pb.SomeFunctionResponse) => void): grpc.ClientUnaryCall;
 }

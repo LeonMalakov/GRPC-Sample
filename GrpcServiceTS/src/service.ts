@@ -6,23 +6,23 @@ import {
 } from '@grpc/grpc-js';
 
 // Подключаем сгенерированный сервис.
-import { OutputServiceService } from './proto/output_grpc_pb';
+import { OutputService } from './proto/output_grpc_pb';
 
 // Подключаем сгенерированные grpc классы.
 import {
-    OutputRequest,
-    OutputResponse,
+    SomeFunctionRequest,
+    SomeFunctionResponse,
 } from './proto/output_pb';
 
 export class Service {
     run() {
         // Создаем обработчик запроса.
         const output = (
-            call: ServerUnaryCall<OutputRequest, OutputResponse>,
-            callback: sendUnaryData<OutputResponse>
+            call: ServerUnaryCall<SomeFunctionRequest, SomeFunctionResponse>,
+            callback: sendUnaryData<SomeFunctionResponse>
         ) => {
             // Класс ответа.
-            const responce = new OutputResponse();
+            const responce = new SomeFunctionResponse();
 
             // Достаем данные из запроса.
             const name = call.request.getData();
@@ -39,7 +39,7 @@ export class Service {
         const server = new Server();
 
         // Регаем сервис и обработчик запроса.
-        server.addService(OutputServiceService, {output});
+        server.addService(OutputService, {output});
 
         // Запускаем сервер.
         server.bindAsync('0.0.0.0:4000', ServerCredentials.createInsecure(), () => {
