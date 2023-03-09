@@ -7,11 +7,11 @@
 // app.listen(port, () => console.log(`Running on port ${port}`));
 
 
-import { Service } from './service';
+//import { Service } from './service';
 import { Client } from './client';
 
-const service = new Service();
-service.run();
+// const service = new Service();
+// service.run();
 
 const client = new Client();
 client.run();

@@ -23,7 +23,7 @@ interface IOutputServiceService_IOutput extends grpc.MethodDefinition<output_pb.
 
 export const OutputServiceService: IOutputServiceService;
 
-export interface IOutputServiceServer {
+export interface IOutputServiceServer extends grpc.UntypedServiceImplementation {
     output: grpc.handleUnaryCall<output_pb.OutputRequest, output_pb.OutputResponse>;
 }
 
@@ -34,7 +34,7 @@ export interface IOutputServiceClient {
 }
 
 export class OutputServiceClient extends grpc.Client implements IOutputServiceClient {
-    constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
     public output(request: output_pb.OutputRequest, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
     public output(request: output_pb.OutputRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;
     public output(request: output_pb.OutputRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: output_pb.OutputResponse) => void): grpc.ClientUnaryCall;

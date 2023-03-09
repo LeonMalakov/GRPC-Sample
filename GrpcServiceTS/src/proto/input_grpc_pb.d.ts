@@ -23,7 +23,7 @@ interface IInputServiceService_IInput extends grpc.MethodDefinition<input_pb.Inp
 
 export const InputServiceService: IInputServiceService;
 
-export interface IInputServiceServer {
+export interface IInputServiceServer extends grpc.UntypedServiceImplementation {
     input: grpc.handleUnaryCall<input_pb.InputRequest, input_pb.InputResponse>;
 }
 
@@ -34,7 +34,7 @@ export interface IInputServiceClient {
 }
 
 export class InputServiceClient extends grpc.Client implements IInputServiceClient {
-    constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
+    constructor(address: string, credentials: grpc.ChannelCredentials, options?: Partial<grpc.ClientOptions>);
     public input(request: input_pb.InputRequest, callback: (error: grpc.ServiceError | null, response: input_pb.InputResponse) => void): grpc.ClientUnaryCall;
     public input(request: input_pb.InputRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: input_pb.InputResponse) => void): grpc.ClientUnaryCall;
     public input(request: input_pb.InputRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: input_pb.InputResponse) => void): grpc.ClientUnaryCall;

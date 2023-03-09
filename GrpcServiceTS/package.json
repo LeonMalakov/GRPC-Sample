@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "proto-gen": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:lib/proto --ts_out=src/proto --grpc_out=lib/proto -I ./proto proto/*.proto"
+    "proto-gen": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:lib/proto --ts_out=grpc_js:src/proto --grpc_out=grpc_js:lib/proto -I ./proto proto/*.proto"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.8.12",
