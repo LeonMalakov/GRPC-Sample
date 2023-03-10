@@ -20,5 +20,30 @@ namespace GrpcServiceCS.Services {
 
             return Task.FromResult(responce);
         }
+
+        public override async Task SomeFunctionOutStream(SomeFunctionRequest request, IServerStreamWriter<SomeFunctionResponse> responseStream, ServerCallContext context) {
+            string data = request.Data;
+            Console.WriteLine($"[Service] SomeFunctionOutStream Received: {data}");
+
+            for (int i = 0; i < 4; i++) {
+                var responce = new SomeFunctionResponse { 
+                    Data = $"Stream Responce {i} for {data}"
+                };
+                await responseStream.WriteAsync(responce);
+                await Task.Delay(1000);
+            }
+        }
+
+        public override async Task<SomeFunctionResponse> SomeFunctionInStream(IAsyncStreamReader<SomeFunctionRequest> requestStream, ServerCallContext context) {
+            await foreach(var request in requestStream.ReadAllAsync()) {
+                Console.WriteLine($"[Service] SomeFunctionInStream Received: {request.Data}.");
+            }
+
+            var response = new SomeFunctionResponse() {
+                Data = $"SomeFunctionInStream Responce."
+            };
+
+            return response;
+        }
     }
 }

@@ -6,6 +6,8 @@ package output;
 
 service Output {
   rpc SomeFunction (SomeFunctionRequest) returns (SomeFunctionResponse);
+  rpc SomeFunctionOutStream (SomeFunctionRequest) returns (stream SomeFunctionResponse);
+  rpc SomeFunctionInStream (stream SomeFunctionRequest) returns (SomeFunctionResponse);
 }
 
 message SomeFunctionRequest {

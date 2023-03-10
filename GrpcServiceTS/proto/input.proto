@@ -6,6 +6,8 @@ package input;
 
 service Input {
   rpc SomeFunction (SomeFunctionRequest) returns (SomeFunctionResponse);
+  rpc SomeFunctionOutStream (SomeFunctionRequest) returns (stream SomeFunctionResponse);
+  rpc SomeFunctionInStream (stream SomeFunctionRequest) returns (SomeFunctionResponse);
 }
 
 message SomeFunctionRequest {

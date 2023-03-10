@@ -19,8 +19,8 @@ namespace GrpcServiceCS {
             app.MapGrpcService<InputService>();
             app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
-            //var client = new OutputClient();
-            //client.Run();
+            var client = new OutputClient();
+            client.Run();
 
             app.Run();
         }

@@ -39,6 +39,28 @@ var OutputService = exports.OutputService = {
     responseSerialize: serialize_output_SomeFunctionResponse,
     responseDeserialize: deserialize_output_SomeFunctionResponse,
   },
+  someFunctionOutStream: {
+    path: '/output.Output/SomeFunctionOutStream',
+    requestStream: false,
+    responseStream: true,
+    requestType: output_pb.SomeFunctionRequest,
+    responseType: output_pb.SomeFunctionResponse,
+    requestSerialize: serialize_output_SomeFunctionRequest,
+    requestDeserialize: deserialize_output_SomeFunctionRequest,
+    responseSerialize: serialize_output_SomeFunctionResponse,
+    responseDeserialize: deserialize_output_SomeFunctionResponse,
+  },
+  someFunctionInStream: {
+    path: '/output.Output/SomeFunctionInStream',
+    requestStream: true,
+    responseStream: false,
+    requestType: output_pb.SomeFunctionRequest,
+    responseType: output_pb.SomeFunctionResponse,
+    requestSerialize: serialize_output_SomeFunctionRequest,
+    requestDeserialize: deserialize_output_SomeFunctionRequest,
+    responseSerialize: serialize_output_SomeFunctionResponse,
+    responseDeserialize: deserialize_output_SomeFunctionResponse,
+  },
 };
 
 exports.OutputClient = grpc.makeGenericClientConstructor(OutputService);
