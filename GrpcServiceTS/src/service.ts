@@ -18,18 +18,17 @@ import {
 
 export class Service {
     run() {
-        // Создаем обработчик запроса.
+
+        // Обработчик обычного запроса.
         const someFunctionHandler = (
             call: ServerUnaryCall<SomeFunctionRequest, SomeFunctionResponse>,
             callback: sendUnaryData<SomeFunctionResponse>
         ) => {
-            // Класс ответа.
-            const responce = new SomeFunctionResponse();
-
             // Достаем данные из запроса.
             const name = call.request.getData();
-
-            // Кладем данные в ответ.
+            
+            // Собираем ответ.
+            const responce = new SomeFunctionResponse();
             responce.setData(`Responce for ${name}`);
 
             // Отправялем ответ.
@@ -38,7 +37,7 @@ export class Service {
             console.info(`[Service] Received: ${name}. Sent responce: ${responce.getData()}`);
         };
 
-        // Создаем обработчик запроса.
+        // Обработчик запроса с потоком со стороны сервера.
         const someFunctionOutStreamHandler = async (
             call: ServerWritableStream<SomeFunctionRequest, SomeFunctionResponse>
         ) => {
@@ -47,41 +46,37 @@ export class Service {
             // Класс ответа.
             const responce = new SomeFunctionResponse();
 
+            // Отправляем ответ в поток.
             responce.setData("Msg 0");
             call.write(responce);
 
             await this.delay(1000);
 
+            // Отправляем ответ в поток.
             responce.setData("Msg 1");
             call.write(responce);
 
+            // Завершаем поток.
             call.end();    
         };
 
-        // Создаем обработчик запроса.
+        // Обработчик запроса с потоком со стороны клиента.
         const someFunctionInStreamHandler = async (
             call: ServerReadableStream<SomeFunctionRequest, SomeFunctionResponse>,
             callback: sendUnaryData<SomeFunctionResponse>
         ) => {
-
-            let done = false;
-
+            // Колбэк получения порции данных из потока.
             call.on("data", (chunk : SomeFunctionResponse) => {
                 console.info(`[Service] SomeFunctionInStream Received responce stream: ${chunk.getData()}`);
             });
     
+            // Колбэк завершения потока.
             call.on("end", () => {
-                done = true;
+                // Отправляем ответ.
+                const response = new SomeFunctionResponse();
+                response.setData("Response here");
+                callback(null, response);
             });
-        
-            while(!done) {
-                await this.delay(100);
-            }
-
-            // Класс ответа.
-            const response = new SomeFunctionResponse();
-            response.setData("Response here");
-            callback(null, response);
         };
 
         const server = new Server();
@@ -93,7 +88,7 @@ export class Service {
             someFunctionInStream: someFunctionInStreamHandler
         });
 
-        // Запускаем сервер.
+        // Запускаем сервер, указывая адрес и креденшалсы.
         server.bindAsync('0.0.0.0:4001', ServerCredentials.createInsecure(), () => {
             server.start();
 
@@ -101,6 +96,7 @@ export class Service {
         });      
     }
 
+    // Задержка.
     delay(ms : number) : Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }

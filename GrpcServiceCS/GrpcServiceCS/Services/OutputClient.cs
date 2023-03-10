@@ -8,11 +8,16 @@ using System.Threading.Tasks;
 namespace GrpcServiceCS.Services {
     public class OutputClient {
         public async void Run() {
+            // Создаем канал.
+            // Указывается адрес и креденшалсы.
             using var channel = GrpcChannel.ForAddress("http://localhost:4001", new GrpcChannelOptions() {
                 Credentials = ChannelCredentials.Insecure
             });
 
+            // Создаем клиента.
             var client = new Output.OutputClient(channel);
+
+            // Для примера запускаем методы каждые 5 секунд.
             while (true) {
                 try {
                     await RunSomeFunction(client);
@@ -25,14 +30,21 @@ namespace GrpcServiceCS.Services {
             }
         }
 
+        // Пример обычного запроса.
         private async Task RunSomeFunction(Output.OutputClient client) {
+            // Вызываем grpc метод и получаем результат.
             var reply = await client.SomeFunctionAsync(new SomeFunctionRequest { Data = "qwerty" });
             Console.WriteLine($"[Client] Received: {reply.Data}");
         }
 
+        // Пример запроса, где сервер отдает поток.
         private async Task RunSomeFunctionOutStream(Output.OutputClient client) {
+            // Вызываем метод grpc и достаем оттуда поток.
             var data = client.SomeFunctionOutStream(new SomeFunctionRequest { Data = "qwerty" });
             var stream = data.ResponseStream;
+
+            // Разбираем сообщения из потока.
+            // Можно засунуть cancellationToken.
             var cancellation = new CancellationTokenSource();
             while(await stream.MoveNext(cancellation.Token)) {
                 var response = stream.Current;
@@ -40,15 +52,21 @@ namespace GrpcServiceCS.Services {
             }
         }
 
+        // Пример запроса, где клиент отправляет поток.
         private async Task RunSomeFunctionInStream(Output.OutputClient client) {
+            // Вызываем метод grpc.
             var call = client.SomeFunctionInStream();
 
             for(int i = 0; i < 3; i++) {
+                // Отправляем данные.
                 await call.RequestStream.WriteAsync(new SomeFunctionRequest() { Data = $"msg {i}" });
                 await Task.Delay(1000);
             }
+
+            // Завершаем поток.
             await call.RequestStream.CompleteAsync();
 
+            // Ждем ответа.
             var response = await call.ResponseAsync;
 
             Console.WriteLine($"[Client] RunSomeFunctionInStream Received: {response.Data}");
