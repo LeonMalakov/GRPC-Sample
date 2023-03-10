@@ -6,75 +6,73 @@ export class Client {
     async run() {
         const client = new InputClient('localhost:4000', credentials.createInsecure());
 
-        await this.runSomeFunction(client);
-        await this.runSomeFunctionOutStream(client);
-        await this.runSomeFunctionInStream(client);
+        while(true) {
+            await this.runSomeFunction(client);
+            await this.runSomeFunctionOutStream(client);
+            await this.runSomeFunctionInStream(client);
+            await this.delay(5000);
+        }
     }
 
-    async runSomeFunction(client : InputClient) {
+    // Можно делать типизированный Promise и возвращать результат, вызывая resolve(результат).
+    runSomeFunction(client : InputClient) : Promise<void> {
         const request = new SomeFunctionRequest();
         request.setData("Abcd");
 
-        let done = false;
-        client.someFunction(request, (error, response) => {
-            if(error) {
-                console.error(error);
-                return;
-            }
-            console.info(`[Client] Received responce: ${response.getData()}`);
-            done = true;
+        return new Promise<void>((resolve, reject) => {
+            client.someFunction(request, (error, response) => {
+                if(error) {
+                    reject(error);
+                    console.info(`[Client] Failed: ${error.message}`);
+                } else {
+                    console.info(`[Client] Received responce: ${response.getData()}`);
+                    resolve();
+                }
+            });
         });
-
-        // 
-        while(!done) {
-            await this.delay(100);
-        }
     }
 
-    async runSomeFunctionOutStream(client : InputClient) {
+    runSomeFunctionOutStream(client : InputClient) : Promise<void> {
         const request = new SomeFunctionRequest();
         request.setData("outstreamcalldata");
 
-        let done = false;
-        const responseStream = await client.someFunctionOutStream(request);
-        
-        responseStream.on("data", (chunk : SomeFunctionResponse) => {
-            console.info(`[Client] Received responce stream: ${chunk.getData()}`);
-        });
+        return new Promise<void>((resolve, reject) => {
+            const responseStream = client.someFunctionOutStream(request);     
+            
+            responseStream.on("data", (chunk : SomeFunctionResponse) => {
+                console.info(`[Client] Received responce stream: ${chunk.getData()}`);
+            });
 
-        responseStream.on("end", () => {
-            done = true;
+            responseStream.on("end", resolve);
+            responseStream.on("error", reject);
         });
-
-        // 
-        while(!done) {
-            await this.delay(100);
-        }
     }
 
-    async runSomeFunctionInStream(client : InputClient) {
-        let done = false;
-        const stream = client.someFunctionInStream((error, response) => {
-            console.info(`[Client] runSomeFunctionInStream Received responce: ${response.getData()}`);
-            done = true;
+    runSomeFunctionInStream(client : InputClient) : Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            const stream = client.someFunctionInStream((error, response) => {
+                if(error){
+                    console.info(`[Client] Failed: ${error.message}`);
+                    reject();
+                } else {
+                    console.info(`[Client] runSomeFunctionInStream Received responce: ${response.getData()}`);
+                }
+            });
+            const request = new SomeFunctionRequest();
+            request.setData("Data 1");
+            stream.write(request);
+
+            request.setData("Data 2");
+            stream.write(request);
+
+            await this.delay(1000);
+
+            request.setData("Data 3");
+            stream.write(request);
+            stream.end();
+
+            resolve();
         });
-        const request = new SomeFunctionRequest();
-        request.setData("Data 1");
-        stream.write(request);
-
-        request.setData("Data 2");
-        stream.write(request);
-
-        await this.delay(1000);
-
-        request.setData("Data 3");
-        stream.write(request);
-        stream.end();
-
-        // 
-        while(!done) {
-            await this.delay(100);
-        }
     }
 
     delay(ms : number) : Promise<void> {

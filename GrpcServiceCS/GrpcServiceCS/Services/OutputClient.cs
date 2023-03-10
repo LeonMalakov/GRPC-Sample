@@ -13,9 +13,16 @@ namespace GrpcServiceCS.Services {
             });
 
             var client = new Output.OutputClient(channel);
-            await RunSomeFunction(client);
-            await RunSomeFunctionOutStream(client);
-            await RunSomeFunctionInStream(client);
+            while (true) {
+                try {
+                    await RunSomeFunction(client);
+                    await RunSomeFunctionOutStream(client);
+                    await RunSomeFunctionInStream(client);
+                } catch (Exception ex) {
+                    Console.WriteLine($"[Client] Failed");
+                }
+                await Task.Delay(5000);
+            }
         }
 
         private async Task RunSomeFunction(Output.OutputClient client) {
